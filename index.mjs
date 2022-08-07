@@ -49,24 +49,19 @@ let AliceCards = [];
 let BobCards = [];
 let AliceScore = 0;
 let BobScore = 0;
+let totalScore = [];
 let cardValue = {
   value: "",
 };
 let whoScore = {
   score: 0,
 };
-let cardA;
 const Player = (who) => ({
   ...stdlib.hasRandom,
   PlayerCard: () => {
     let card = randomCards();
-    cardA = card;
-
-    who == "Alice"
-      ? (whoScore.score = AliceScore)
-      : (whoScore.score = BobScore);
     if (card == "A") {
-      if (whoScore.score + blackJackGame["cardsMap"][card][1] > 21) {
+      if (whoScore.score + blackJackGame["cardsMap"][card][1] > 10) {
         cardValue.value = blackJackGame["cardsMap"][card][0];
       } else {
         cardValue.value = blackJackGame["cardsMap"][card][1];
@@ -77,22 +72,25 @@ const Player = (who) => ({
 
     if (who == "Alice") {
       AliceCards.push(cardValue.value);
-      AliceScore = AliceCards.reduce((a, b) => a + b);
-      console.log(whoScore.score);
     } else {
       BobCards.push(cardValue.value);
-      BobScore = BobCards.reduce((a, b) => a + b);
-      console.log(whoScore.score);
     }
-
-    // who == "Alice" ? AliceCards.push(card) : BobCards.push(card);
     console.log(`${who} played ${card}`);
-
     return cardValue;
   },
   seeCardValue: () => {
-    console.log(`${who}(seeCards Obj) cards are ${cardValue.value}`);
+    console.log(`${who} card value is ${cardValue.value}`);
     return cardValue.value;
+  },
+  totalCardValue: () => {
+    let AliceScore = AliceCards.reduce((a, b) => {
+      return a + b;
+    }, 0);
+    let BobScore = BobCards.reduce((a, b) => {
+      return a + b;
+    }, 0);
+    totalScore.push(AliceScore, BobScore);
+    return totalScore;
   },
 });
 
@@ -101,27 +99,18 @@ await Promise.all([
   backend.Alice(ctcAlice, {
     ...Player("Alice"),
     wager: stdlib.parseCurrency(5),
-    aliceScore: () => {
-      return AliceScore;
-    },
-    // implement Alice's interact object here
   }),
   backend.Bob(ctcBob, {
     ...Player("Bob"),
     acceptWager: (amt) => {
       console.log(`Bob accepts the wager of ${fmt(amt)}.`);
     },
-    // implement Bob's interact object here
   }),
 ]);
-
-// AliceScore = AliceCards.reduce((a, b) => a + b);
-// AliceScore = AliceCards.reduce((a, b) => a + b);
-// BobScore = BobCards.reduce((a, b) => a + b);
 console.log(AliceCards);
 console.log(BobCards);
-console.log(AliceScore);
-console.log(BobScore);
+console.log(`{total alice card is ${totalScore[0]}}`);
+console.log(`{total bob card is ${totalScore[1]}}`);
 console.log("Goodbye, Alice and Bob!");
 // To - DO
 // Push card in array..

@@ -1,9 +1,32 @@
 "reach 0.1";
 
+const [isOutcome, B_WINS, DRAW, A_WINS] = makeEnum(3);
+
+const game = (aliceCard, bobCard) => {
+  const a = aliceCard;
+  const b = bobCard;
+
+  if (a > 21) {
+    return B_WINS;
+  }
+  if (a >= 17 && a < 22 && isDealersTurn) {
+    if (a > b) {
+      return A_WINS;
+    }
+    if (a < b && !isPlayerBusted) {
+      return B_WINS;
+    }
+    if (a === b && !isPlayerBusted) {
+      DRAW;
+    }
+  }
+};
+
 const Player = {
   ...hasRandom,
   PlayerCard: Fun([], Object({ value: UInt })),
   seeCardValue: Fun([], UInt),
+  totalCardValue: Fun([], Array(UInt, 2)),
 };
 
 export const main = Reach.App(() => {
@@ -20,9 +43,8 @@ export const main = Reach.App(() => {
   init();
   Alice.only(() => {
     const wager = declassify(interact.wager);
-    const AliceScore = declassify(interact.aliceScore());
   });
-  Alice.publish(wager, AliceScore).pay(wager);
+  Alice.publish(wager).pay(wager);
 
   commit();
 
@@ -32,36 +54,30 @@ export const main = Reach.App(() => {
 
   Bob.pay(wager);
 
-  var cardValue = AliceScore;
+  var cardValue = 0;
 
   invariant(balance() == 2 * wager);
-  while (cardValue < 21) {
+  while (cardValue < 2) {
     commit();
     Alice.only(() => {
       const AliceCard = declassify(interact.PlayerCard());
       const AliceCardValues = declassify(interact.seeCardValue());
     });
     Alice.publish(AliceCard);
-
-    cardValue = cardValue + 1;
-    continue;
-  }
-  var [bobValue] = [0];
-  invariant(balance() == 2 * wager);
-  while (bobValue < 3) {
+    commit();
     Bob.only(() => {
       const BobCard = declassify(interact.PlayerCard());
       const BobCardValues = declassify(interact.seeCardValue());
     });
-
-    commit();
-
     Bob.publish(BobCard);
-    // commit();
-    bobValue = bobValue + 1;
+    cardValue = cardValue + 1;
     continue;
-  } // write your program here
-
+  }
+  commit();
+  Alice.only(() => {
+    const totalCard = declassify(interact.totalCardValue());
+  });
+  Alice.publish(totalCard);
   transfer(2 * wager).to(Alice);
   commit();
   exit();
