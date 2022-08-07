@@ -1,0 +1,68 @@
+import { loadStdlib } from "@reach-sh/stdlib";
+import * as backend from "./index.main.mjs";
+const stdlib = loadStdlib(process.env);
+
+const startingBalance = stdlib.parseCurrency(100);
+
+const [accAlice, accBob] = await stdlib.newTestAccounts(2, startingBalance);
+console.log("Hello, Alice and Bob!");
+
+console.log("Launching...");
+const ctcAlice = accAlice.contract(backend);
+const ctcBob = accBob.contract(backend, ctcAlice.getInfo());
+
+let blackJackGame = {
+  deployer: {
+    scorespan: 0,
+    score: 0,
+  },
+  attacher: {
+    scorespan: 0,
+    score: 0,
+  },
+  cards: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "K", "Q", "J", "A"],
+  cardsMap: {
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 7,
+    8: 8,
+    9: 9,
+    10: 10,
+    K: 10,
+    J: 10,
+    Q: 10,
+    A: [1, 11],
+  },
+};
+
+const randomCards = () => {
+  let randomIndex = Math.floor(Math.random() * 13);
+  // return blackJackGame["cards"][randomIndex];
+  return randomIndex;
+};
+
+const Player = async (who) => ({
+  ...stdlib.hasRandom,
+  PlayerCard: () => {
+    let card = randomCards();
+    console.log(`${who} played ${card}`);
+    return card;
+  },
+});
+
+console.log("Starting backends...");
+await Promise.all([
+  backend.Alice(ctcAlice, {
+    // implement Alice's interact object here
+    ...Player("Alice"),
+  }),
+  backend.Bob(ctcBob, {
+    // implement Bob's interact object here
+    ...Player("Bob"),
+  }),
+]);
+
+console.log("Goodbye, Alice and Bob!");
