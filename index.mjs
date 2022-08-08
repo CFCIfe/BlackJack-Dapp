@@ -45,8 +45,8 @@ const randomCards = () => {
   return blackJackGame["cards"][randomIndex];
 };
 
-let AliceCards = [];
-let BobCards = [];
+let AliceCardsValue = [];
+let BobCardsValue = [];
 let AliceScore = 0;
 let BobScore = 0;
 let totalScore = [];
@@ -56,6 +56,7 @@ let cardValue = {
 let whoScore = {
   score: 0,
 };
+const OUTCOME = ['Bob wins', 'Draw', 'Alice wins'];
 const Player = (who) => ({
   ...stdlib.hasRandom,
   PlayerCard: () => {
@@ -71,27 +72,38 @@ const Player = (who) => ({
     }
 
     if (who == "Alice") {
-      AliceCards.push(cardValue.value);
+      AliceCardsValue.push(cardValue.value);
+           AliceScore = AliceCardsValue.reduce((a, b) => {
+      return a + b;
+    }, 0);
     } else {
-      BobCards.push(cardValue.value);
+      BobCardsValue.push(cardValue.value);
+          BobScore = BobCardsValue.reduce((a, b) => {
+      return a + b;
+    }, 0);
     }
     console.log(`${who} played ${card}`);
     return cardValue;
   },
+
   seeCardValue: () => {
     console.log(`${who} card value is ${cardValue.value}`);
     return cardValue.value;
   },
+
   totalCardValue: () => {
-    let AliceScore = AliceCards.reduce((a, b) => {
+     AliceScore = AliceCardsValue.reduce((a, b) => {
       return a + b;
     }, 0);
-    let BobScore = BobCards.reduce((a, b) => {
+    BobScore = BobCardsValue.reduce((a, b) => {
       return a + b;
     }, 0);
     totalScore.push(AliceScore, BobScore);
     return totalScore;
   },
+  seeOutcome: (outcome) => {
+    console.log(`${who} saw outcome ${OUTCOME[outcome]} `);
+  }
 });
 
 console.log("Starting backends...");
@@ -99,16 +111,24 @@ await Promise.all([
   backend.Alice(ctcAlice, {
     ...Player("Alice"),
     wager: stdlib.parseCurrency(5),
+    aliceScore: () => {
+      console.log(`Alice Score is ${AliceScore}`);
+      return AliceScore;
+    }
   }),
   backend.Bob(ctcBob, {
     ...Player("Bob"),
     acceptWager: (amt) => {
       console.log(`Bob accepts the wager of ${fmt(amt)}.`);
     },
+    bobScore: () => {
+      console.log(`Bob score is ${BobScore}`);
+      return BobScore;
+    }
   }),
 ]);
-console.log(AliceCards);
-console.log(BobCards);
+console.log(AliceCardsValue);
+console.log(BobCardsValue);
 console.log(`{total alice card is ${totalScore[0]}}`);
 console.log(`{total bob card is ${totalScore[1]}}`);
 console.log("Goodbye, Alice and Bob!");
