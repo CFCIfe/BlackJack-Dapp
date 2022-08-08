@@ -2,31 +2,50 @@
 
 const [isOutcome, B_WINS, DRAW, A_WINS] = makeEnum(3);
 
-const game = (aliceCard, bobCard) => {
-  const a = aliceCard;
-  const b = bobCard;
+// const game = (aliceCard, bobCard) => {
+//   const a = aliceCard;
+//   const b = bobCard;
 
-  if (a > 21) {
-    return B_WINS;
+//   if (a > 21) {
+//     return B_WINS;
+//   }
+//   if (a >= 17 && a < 22 && isDealersTurn) {
+//     if (a > b) {
+//       return A_WINS;
+//     }
+//     if (a < b && !isPlayerBusted) {
+//       return B_WINS;
+//     }
+//     if (a === b && !isPlayerBusted) {
+//       DRAW;
+//     }
+//   }
+// };
+
+const winner = (A_score, B_score) => {
+  const A = A_score;
+  const B = B_score;
+
+  if (A <= 21 && B > 21 || A > B) {
+    return A_WINS
+  } else if (B <= 21 && A > 21 || B > A){
+    return B_WINS
+  } else {
+    return DRAW
   }
-  if (a >= 17 && a < 22 && isDealersTurn) {
-    if (a > b) {
-      return A_WINS;
-    }
-    if (a < b && !isPlayerBusted) {
-      return B_WINS;
-    }
-    if (a === b && !isPlayerBusted) {
-      DRAW;
-    }
-  }
-};
+}
+
+
 
 const Player = {
   ...hasRandom,
   PlayerCard: Fun([], Object({ value: UInt })),
   seeCardValue: Fun([], UInt),
   totalCardValue: Fun([], Array(UInt, 2)),
+  //we need to get the total cards of individual player
+  totalCard: Fun([], Array(Bytes
+    (1), 2)),
+  seeOutcome: Fun([UInt], Null)
 };
 
 export const main = Reach.App(() => {
@@ -54,31 +73,65 @@ export const main = Reach.App(() => {
 
   Bob.pay(wager);
 
-  var cardValue = 0;
+  var outcome = DRAW 
+  invariant(balance() == 2 * wager && isOutcome(outcome))
+  while (outcome == DRAW) {
 
+
+  var AliceScore = 0;
   invariant(balance() == 2 * wager);
-  while (cardValue < 2) {
+  while (AliceScore <= 21 ) {
     commit();
     Alice.only(() => {
       const AliceCard = declassify(interact.PlayerCard());
       const AliceCardValues = declassify(interact.seeCardValue());
+    const aliceScore = declassify(interact.aliceScore())
     });
-    Alice.publish(AliceCard);
-    commit();
+    Alice.publish(AliceCard, aliceScore);
+
+    AliceScore = AliceScore + aliceScore;
+    continue;
+  }
+  
+  var BobScore = 0 ;
+  invariant(balance() == 2 * wager)
+  while (BobScore <= 21) {
     Bob.only(() => {
       const BobCard = declassify(interact.PlayerCard());
       const BobCardValues = declassify(interact.seeCardValue());
+    const bobScore = declassify(interact.bobScore())
+
     });
-    Bob.publish(BobCard);
-    cardValue = cardValue + 1;
+    commit();
+    Bob.publish(BobCard, bobScore);
+    BobScore = BobScore + bobScore
     continue;
   }
   commit();
+  
   Alice.only(() => {
     const totalCard = declassify(interact.totalCardValue());
+    const score_A = declassify(interact.aliceScore())
   });
-  Alice.publish(totalCard);
-  transfer(2 * wager).to(Alice);
+
+  Alice.publish(totalCard, score_A);
+
+
   commit();
+  Bob.only(() => {
+    const score_B = declassify(interact.bobScore())
+  })
+
+  Bob.publish(score_B)
+
+  // const outcome = 
+  outcome = winner(score_A, score_B);
+  continue
+}
+  assert(outcome == A_WINS || outcome == B_WINS);
+  transfer(2 * wager).to(outcome == A_WINS ? Alice : Bob);
+  commit();
+
+  each([Alice, Bob], () => interact.seeOutcome(outcome));
   exit();
 });
