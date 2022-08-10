@@ -91,21 +91,20 @@ export const main = Reach.App(() => {
     });
 
     Alice.publish(totalCard, score_A);
-
     commit();
+
     Bob.only(() => {
       const score_B = declassify(interact.bobScore());
     });
 
     Bob.publish(score_B);
-
     if (score_B < 15) {
+      commit();
       Bob.only(() => {
         const bobCard = declassify(interact.extraCard());
       });
-      Bob.publish(bobCard);
     }
-
+    Bob.publish(bobCard);
     score_B = bobCard + score_B;
     outcome = winner(score_A, score_B);
     continue;
