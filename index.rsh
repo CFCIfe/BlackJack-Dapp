@@ -2,26 +2,6 @@
 
 const [isOutcome, B_WINS, DRAW, A_WINS] = makeEnum(3);
 
-// const game = (aliceCard, bobCard) => {
-//   const a = aliceCard;
-//   const b = bobCard;
-
-//   if (a > 21) {
-//     return B_WINS;
-//   }
-//   if (a >= 17 && a < 22 && isDealersTurn) {
-//     if (a > b) {
-//       return A_WINS;
-//     }
-//     if (a < b && !isPlayerBusted) {
-//       return B_WINS;
-//     }
-//     if (a === b && !isPlayerBusted) {
-//       DRAW;
-//     }
-//   }
-// };
-
 const winner = (A_score, B_score) => {
   const A = A_score;
   const B = B_score;
@@ -43,6 +23,7 @@ const Player = {
   //we need to get the total cards of individual player
   totalCard: Fun([], Array(Bytes(1), 2)),
   seeOutcome: Fun([UInt], Null),
+  extraCard: Fun([], UInt),
 };
 
 export const main = Reach.App(() => {
@@ -118,23 +99,15 @@ export const main = Reach.App(() => {
 
     Bob.publish(score_B);
 
-    // const outcome =
+    if (score_B < 15) {
+      Bob.only(() => {
+        const bobCard = declassify(interact.extraCard());
+      });
+      Bob.publish(bobCard);
+    }
+
+    score_B = bobCard + score_B;
     outcome = winner(score_A, score_B);
-    // if (outcome == A_WINS) {
-    //   // player wins, increment pTally
-    //   [aliceRound, bobRound] = [aliceRound + 1, bobRound];
-    //   continue;
-    // } else {
-    //   if (outcome == B_WINS) {
-    //     // dealer wins, increment dTally
-    //     [aliceRound, bobRound] = [aliceRound, bobRound + 1];
-    //     continue;
-    //   } else {
-    //     // draw don't update tallys
-    //     [aliceRound, bobRound] = [aliceRound, bobRound];
-    //     continue;
-    //   }
-    // }
     continue;
   }
   assert(outcome == A_WINS || outcome == B_WINS);

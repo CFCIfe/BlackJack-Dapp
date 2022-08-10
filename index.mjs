@@ -86,8 +86,12 @@ const Player = (who) => ({
     return cardValue;
   },
 
-  seeCardValue: () => {
-    console.log(`${who} card value is ${cardValue.value}`);
+  seeCardValue: (card) => {
+    console.log(
+      `${who} card value is ${
+        card ? cardValue.value : blackJackGame["cardsMap"][card]
+      }`
+    );
     return cardValue.value;
   },
 
@@ -121,6 +125,9 @@ await Promise.all([
     ...Player("Bob"),
     acceptWager: (amt) => {
       console.log(`Bob accepts the wager of ${fmt(amt)}.`);
+      extraCard: () => {
+        return Math.floor(Math.random() * 12);
+      };
     },
     bobScore: () => {
       console.log(`Bob score is ${BobScore}`);
