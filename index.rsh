@@ -1,215 +1,146 @@
-/**
- * Blackjack
- * Project: A blackjack-like game with asymmetric payouts based on proximity to 21.
- * Article used: https://blog.devgenius.io/blackjack-game-logic-basics-built-with-react-hooks-8e7e41fbbb87
- * App reference - https://github.com/nstanford5/Reach-Blackjack/
- *
- * Alice - Dealer. Bob - Player
- *
- * Face cards are valued at 10,
- * Number cards are valued by their number.Address
- * An ace can be valued as 1 or 11.
- *
- * Player goes first and chooses deal / stay after seeing both cards.
- * Deal returns another card to be added to the sum.
- * Stay sums up all dealt card and;
- *
- * The Dealer begins.
- * The dealer will continue to draw cards until
- * their sum is greater than the player or the sum exceeds 21.
- *
- * If the dealer has blackjack, the player instantly loses their wager,
- * unless they too have blackjack.
- * If the player has blackjack and dealer does not, the wager gets paid 3 to 2,
- * That is to say, 1.5 times the original bet.
- *
- * The player’s goal is to achieve a score of 21, although in some cases it is
- * best to stay at a low number and not risk “busting” (going over 21) because
- * the dealer also has a chance to bust which causes the player to win too.
- */
-
 "reach 0.1";
 
-const [isOutcome, B_WINS, A_WINS, DRAW] = makeEnum(3);
+const [isOutcome, B_WINS, DRAW, A_WINS] = makeEnum(3);
 
-const winner = (bTotal, aTotal) => {
-  if (aTotal > 21 || (bTotal < 22 && bTotal > aTotal)) {
+// const game = (aliceCard, bobCard) => {
+//   const a = aliceCard;
+//   const b = bobCard;
+
+//   if (a > 21) {
+//     return B_WINS;
+//   }
+//   if (a >= 17 && a < 22 && isDealersTurn) {
+//     if (a > b) {
+//       return A_WINS;
+//     }
+//     if (a < b && !isPlayerBusted) {
+//       return B_WINS;
+//     }
+//     if (a === b && !isPlayerBusted) {
+//       DRAW;
+//     }
+//   }
+// };
+
+const winner = (A_score, B_score) => {
+  const A = A_score;
+  const B = B_score;
+
+  if ((A <= 21 && B > 21) || (A < 21 && B < 21 && A > B)) {
     return A_WINS;
+  } else if ((B <= 21 && A > 21) || (B < 21 && A < 21 && B > A)) {
+    return B_WINS;
   } else {
-    if (aTotal < 22 && (aTotal > bTotal || bTotal > 21)) {
-      return B_WINS;
-    } else return DRAW;
+    return DRAW;
   }
 };
 
-// verification steps for the program - https://docs.reach.sh/guide/assert/#guide-assert
-// Possible combinations to help the engine verify results for winners
-
-assert(winner(20, 21) == A_WINS);
-assert(winner(20, 20) == DRAW);
-assert(winner(21, 20) == B_WINS);
-// below 21
-assert(winner(13, 17) == A_WINS);
-assert(winner(19, 19) == DRAW);
-assert(winner(17, 15) == B_WINS);
-// over 21
-assert(winner(27, 17) == A_WINS);
-assert(winner(16, 22) == B_WINS);
-// draw
-assert(winner(19, 19) == DRAW);
-assert(winner(21, 21) == DRAW);
-
-const General = {
+const Player = {
   ...hasRandom,
-  startGame: Fun([], Tuple(UInt, UInt)),
-  informTimeout: Fun([], Null),
-  dealCard: Fun([], UInt),
-  lastCard: Fun([UInt], Null),
-  overTwentyOne: Fun([], Null),
-  seeOutcome: Fun([UInt, UInt, UInt, UInt, UInt], Null),
-  updateCards: Fun([UInt], Null),
-  resetBoard: Fun([], Null),
-  checkScore: Fun([UInt, UInt], Null),
-  getAceValue: Fun([UInt, UInt], UInt),
+  PlayerCard: Fun([], Object({ value: UInt })),
+  seeCardValue: Fun([], UInt),
+  totalCardValue: Fun([], Array(UInt, 2)),
+  //we need to get the total cards of individual player
+  totalCard: Fun([], Array(Bytes(1), 2)),
+  seeOutcome: Fun([UInt], Null),
 };
-
-const cardValue = (card) => {
-  if (card == 1) {
-    return 11;
-  } else {
-    if (card < 10) {
-      return card;
-    } else {
-      return 10;
-    }
-  }
-};
-
-const deadline = 20;
 
 export const main = Reach.App(() => {
-  const Bob = Participant("Bob", {
-    ...General,
-    //bob sets wager against the house
-    wager: UInt,
-  });
   const Alice = Participant("Alice", {
-    ...General,
-    // dealer accepts wager to be fair
+    ...Player,
+    wager: UInt,
+    aliceScore: Fun([], UInt),
+  });
+  const Bob = Participant("Bob", {
+    ...Player,
     acceptWager: Fun([UInt], Null),
-    startCard: Fun([], UInt),
+    bobScore: Fun([], UInt),
   });
   init();
-
-  const informTimeout = () => {
-    each([Bob, Alice], () => {
-      interact.informTimeout();
-    });
-  };
-
-  Bob.only(() => {
+  Alice.only(() => {
     const wager = declassify(interact.wager);
   });
+  Alice.publish(wager).pay(wager);
 
-  Bob.publish(wager).pay(wager);
   commit();
 
-  Alice.only(() => {
+  Bob.only(() => {
     interact.acceptWager(wager);
   });
 
-  Alice.pay(wager).timeout(relativeTime(deadline), () =>
-    closeTo(Bob, informTimeout)
-  );
+  Bob.pay(wager);
 
-  // best of 3 rounds. they both start with zero score. first to 2 wins
-  var [bobScore, aliceScore] = [0, 0];
-  invariant(balance() == 2 * wager);
+  // var [aliceRound, bobRound] = [0, 0];
+  var outcome = DRAW;
+  invariant(balance() == 2 * wager && isOutcome(outcome));
+  while (outcome == DRAW) {
+    var AliceScore = 0;
+    invariant(balance() == 2 * wager);
+    while (AliceScore < 15) {
+      commit();
+      Alice.only(() => {
+        const AliceCard = declassify(interact.PlayerCard());
+        const AliceCardValues = declassify(interact.seeCardValue());
+        const aliceScore = declassify(interact.aliceScore());
+      });
+      Alice.publish(AliceCard, aliceScore);
 
-  while (bobScore < 3 && aliceScore < 3) {
-    commit();
-
-    each([Bob, Alice], () => {
-      interact.checkScore(bobScore, aliceScore);
-      // To-Do: implement logic to discard this view on new game
-      interact.resetBoard();
-    });
-
-    // bob draws both cards when game starts
-    Bob.only(() => {
-      const [bobFirstCard, bobSecondCard] = declassify(interact.startGame());
-    });
-
-    // publish both cards
-    Bob.publish(bobFirstCard, bobSecondCard).timeout(
-      relativeTime(deadline),
-      () => closeTo(Alice, informTimeout)
-    );
-    commit();
-
-    // Alice starts with 2 cards but shows only one at the start.
-    Alice.only(() => {
-      const [_aliceFirstCard, _aliceSecondCard] = interact.startGame();
-      const [_aliceCommit, _aliceSalt] = makeCommitment(
-        interact,
-        _aliceFirstCard
-      );
-      const aliceCommit = declassify(_aliceCommit);
-      const aliceSecondCard = declassify(_aliceSecondCard);
-    });
-
-    // knowledge assertion https://docs.reach.sh/rsh/step/#unknowable that Bob does not know value of Alice card
-
-    unknowable(Bob, Alice(_aliceFirstCard));
-
-    Alice.publish(aliceCommit, aliceSecondCard).timeout(
-      relativeTime(deadline),
-      () => closeTo(Alice, informTimeout)
-    );
-
-    Bob.only(() => {
-      interact.updateCards(aliceSecondCard);
-    });
-    Alice.only(() => {
-      interact.updateCards(bobSecondCard);
-    });
-
-    // Game logic
-    //Player Logic
-
-    Alice.only(() => {
-      interact.lastCard(bobFirstCard);
-    });
-
-    // compute outcome
-    const outcome = winner(bobSum, aliceSum);
-
-    each([Player, Dealer], () => {
-      interact.seeOutcome(outcome, pSum, dSum, pTally, dTally);
-    });
-
-    if (outcome == 0) {
-      [bobScore, aliceScore] = [bobScore + 1, aliceScore];
+      AliceScore = AliceScore + aliceScore;
       continue;
-    } else {
-      if (outcome == 1) {
-        // dealer wins, increment aliceScore
-        [bobScore, aliceScore] = [bobScore, aliceScore + 1];
-        continue;
-      } else {
-        // draw don't update Score
-        [bobScore, aliceScore] = [bobScore, aliceScore];
-        continue;
-      }
     }
+
+    var BobScore = 0;
+    invariant(balance() == 2 * wager);
+    while (BobScore < 15) {
+      Bob.only(() => {
+        const BobCard = declassify(interact.PlayerCard());
+        const BobCardValues = declassify(interact.seeCardValue());
+        const bobScore = declassify(interact.bobScore());
+      });
+      commit();
+      Bob.publish(BobCard, bobScore);
+      BobScore = BobScore + bobScore;
+      continue;
+    }
+    commit();
+
+    Alice.only(() => {
+      const totalCard = declassify(interact.totalCardValue());
+      const score_A = declassify(interact.aliceScore());
+    });
+
+    Alice.publish(totalCard, score_A);
+
+    commit();
+    Bob.only(() => {
+      const score_B = declassify(interact.bobScore());
+    });
+
+    Bob.publish(score_B);
+
+    // const outcome =
+    outcome = winner(score_A, score_B);
+    // if (outcome == A_WINS) {
+    //   // player wins, increment pTally
+    //   [aliceRound, bobRound] = [aliceRound + 1, bobRound];
+    //   continue;
+    // } else {
+    //   if (outcome == B_WINS) {
+    //     // dealer wins, increment dTally
+    //     [aliceRound, bobRound] = [aliceRound, bobRound + 1];
+    //     continue;
+    //   } else {
+    //     // draw don't update tallys
+    //     [aliceRound, bobRound] = [aliceRound, bobRound];
+    //     continue;
+    //   }
+    // }
+    continue;
   }
-
-  each([Player, Dealer], () => {
-    interact.checkScore(bobScore, aliceScore);
-  });
-
-  // transfer wagers and Fee to winner
-  transfer(2 * wager).to(bobScore > aliceScore ? Bob : Alice);
+  assert(outcome == A_WINS || outcome == B_WINS);
+  transfer(2 * wager).to(outcome == A_WINS ? Alice : Bob);
   commit();
+
+  each([Alice, Bob], () => interact.seeOutcome(outcome));
   exit();
 });

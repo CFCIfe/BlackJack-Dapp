@@ -56,7 +56,7 @@ let cardValue = {
 let whoScore = {
   score: 0,
 };
-const OUTCOME = ['Bob wins', 'Draw', 'Alice wins'];
+const OUTCOME = ["Bob wins", "Draw", "Alice wins"];
 const Player = (who) => ({
   ...stdlib.hasRandom,
   PlayerCard: () => {
@@ -73,14 +73,14 @@ const Player = (who) => ({
 
     if (who == "Alice") {
       AliceCardsValue.push(cardValue.value);
-           AliceScore = AliceCardsValue.reduce((a, b) => {
-      return a + b;
-    }, 0);
+      AliceScore = AliceCardsValue.reduce((a, b) => {
+        return a + b;
+      }, 0);
     } else {
       BobCardsValue.push(cardValue.value);
-          BobScore = BobCardsValue.reduce((a, b) => {
-      return a + b;
-    }, 0);
+      BobScore = BobCardsValue.reduce((a, b) => {
+        return a + b;
+      }, 0);
     }
     console.log(`${who} played ${card}`);
     return cardValue;
@@ -92,18 +92,19 @@ const Player = (who) => ({
   },
 
   totalCardValue: () => {
-     AliceScore = AliceCardsValue.reduce((a, b) => {
+    AliceScore = AliceCardsValue.reduce((a, b) => {
       return a + b;
     }, 0);
     BobScore = BobCardsValue.reduce((a, b) => {
       return a + b;
     }, 0);
+    totalScore = [];
     totalScore.push(AliceScore, BobScore);
     return totalScore;
   },
   seeOutcome: (outcome) => {
     console.log(`${who} saw outcome ${OUTCOME[outcome]} `);
-  }
+  },
 });
 
 console.log("Starting backends...");
@@ -114,7 +115,7 @@ await Promise.all([
     aliceScore: () => {
       console.log(`Alice Score is ${AliceScore}`);
       return AliceScore;
-    }
+    },
   }),
   backend.Bob(ctcBob, {
     ...Player("Bob"),
@@ -124,7 +125,7 @@ await Promise.all([
     bobScore: () => {
       console.log(`Bob score is ${BobScore}`);
       return BobScore;
-    }
+    },
   }),
 ]);
 console.log(AliceCardsValue);
