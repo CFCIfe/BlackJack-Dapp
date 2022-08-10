@@ -1,5 +1,5 @@
 import { loadStdlib } from "@reach-sh/stdlib";
-import * as backend from "./index.main.mjs";
+import * as backend from "./build/index.main.mjs";
 const stdlib = loadStdlib(process.env);
 
 const startingBalance = stdlib.parseCurrency(100);
@@ -10,6 +10,8 @@ console.log("Hello, Alice and Bob!");
 console.log("Launching...");
 const ctcAlice = accAlice.contract(backend);
 const ctcBob = accBob.contract(backend, ctcAlice.getInfo());
+const fmt = (x) => stdlib.formatCurrency(x, 4);
+const getBalance = async (who) => fmt(await stdlib.balanceOf(who));
 
 let blackJackGame = {
   deployer: {
@@ -40,29 +42,106 @@ let blackJackGame = {
 
 const randomCards = () => {
   let randomIndex = Math.floor(Math.random() * 13);
-  // return blackJackGame["cards"][randomIndex];
-  return randomIndex;
+  return blackJackGame["cards"][randomIndex];
 };
 
-const Player = async (who) => ({
+let AliceCardsValue = [];
+let BobCardsValue = [];
+let AliceScore = 0;
+let BobScore = 0;
+let totalScore = [];
+let cardValue = {
+  value: "",
+};
+let whoScore = {
+  score: 0,
+};
+const OUTCOME = ["Bob wins", "Draw", "Alice wins"];
+const Player = (who) => ({
   ...stdlib.hasRandom,
   PlayerCard: () => {
     let card = randomCards();
+    if (card == "A") {
+      if (whoScore.score + blackJackGame["cardsMap"][card][1] > 10) {
+        cardValue.value = blackJackGame["cardsMap"][card][0];
+      } else {
+        cardValue.value = blackJackGame["cardsMap"][card][1];
+      }
+    } else {
+      cardValue.value = blackJackGame["cardsMap"][card];
+    }
+
+    if (who == "Alice") {
+      AliceCardsValue.push(cardValue.value);
+      AliceScore = AliceCardsValue.reduce((a, b) => {
+        return a + b;
+      }, 0);
+    } else {
+      BobCardsValue.push(cardValue.value);
+      BobScore = BobCardsValue.reduce((a, b) => {
+        return a + b;
+      }, 0);
+    }
     console.log(`${who} played ${card}`);
-    return card;
+    return cardValue;
+  },
+
+  seeCardValue: (card) => {
+    console.log(
+      `${who} card value is ${
+        card ? cardValue.value : blackJackGame["cardsMap"][card]
+      }`
+    );
+    return cardValue.value;
+  },
+
+  totalCardValue: () => {
+    AliceScore = AliceCardsValue.reduce((a, b) => {
+      return a + b;
+    }, 0);
+    BobScore = BobCardsValue.reduce((a, b) => {
+      return a + b;
+    }, 0);
+    totalScore = [];
+    totalScore.push(AliceScore, BobScore);
+    return totalScore;
+  },
+  seeOutcome: (outcome) => {
+    console.log(`${who} saw outcome ${OUTCOME[outcome]} `);
   },
 });
 
 console.log("Starting backends...");
 await Promise.all([
   backend.Alice(ctcAlice, {
-    // implement Alice's interact object here
     ...Player("Alice"),
+    wager: stdlib.parseCurrency(5),
+    aliceScore: () => {
+      console.log(`Alice Score is ${AliceScore}`);
+      return AliceScore;
+    },
   }),
   backend.Bob(ctcBob, {
-    // implement Bob's interact object here
     ...Player("Bob"),
+    acceptWager: (amt) => {
+      console.log(`Bob accepts the wager of ${fmt(amt)}.`);
+      extraCard: () => {
+        return Math.floor(Math.random() * 12);
+      };
+    },
+    bobScore: () => {
+      console.log(`Bob score is ${BobScore}`);
+      return BobScore;
+    },
   }),
 ]);
-
+console.log(AliceCardsValue);
+console.log(BobCardsValue);
+console.log(`{total alice card is ${totalScore[0]}}`);
+console.log(`{total bob card is ${totalScore[1]}}`);
 console.log("Goodbye, Alice and Bob!");
+// To - DO
+// Push card in array..
+// Implement logic for A card
+// implement logic to play when less than 16 or >= 21
+
