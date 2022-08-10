@@ -80,27 +80,28 @@ export const main = Reach.App(() => {
       });
       commit();
       Bob.publish(BobCard, bobScore);
+
       BobScore = BobScore + bobScore;
       continue;
     }
-
     Alice.only(() => {
       const totalCard = declassify(interact.totalCardValue());
     });
-
-    Alice.publish(totalCard);
     commit();
+    Alice.publish(totalCard);
 
     if (BobScore < 15) {
       Bob.only(() => {
         const bobNewCard = declassify(interact.extraCard());
       });
+      commit();
+      Bob.publish(bobNewCard);
+      BobScore = BobScore + bobNewCard;
     }
-
-    Bobscore = bobCard + bobNewCard;
     outcome = winner(AliceScore, BobScore);
     continue;
   }
+
   assert(outcome == A_WINS || outcome == B_WINS);
   transfer(2 * wager).to(outcome == A_WINS ? Alice : Bob);
   commit();
