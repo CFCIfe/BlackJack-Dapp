@@ -83,30 +83,22 @@ export const main = Reach.App(() => {
       BobScore = BobScore + bobScore;
       continue;
     }
-    commit();
 
     Alice.only(() => {
       const totalCard = declassify(interact.totalCardValue());
-      const score_A = declassify(interact.aliceScore());
     });
 
-    Alice.publish(totalCard, score_A);
+    Alice.publish(totalCard);
     commit();
 
-    Bob.only(() => {
-      const score_B = declassify(interact.bobScore());
-    });
-
-    Bob.publish(score_B);
-    if (score_B < 15) {
-      commit();
+    if (BobScore < 15) {
       Bob.only(() => {
-        const bobCard = declassify(interact.extraCard());
+        const bobNewCard = declassify(interact.extraCard());
       });
     }
-    Bob.publish(bobCard);
-    score_B = bobCard + score_B;
-    outcome = winner(score_A, score_B);
+
+    Bobscore = bobCard + bobNewCard;
+    outcome = winner(AliceScore, BobScore);
     continue;
   }
   assert(outcome == A_WINS || outcome == B_WINS);
