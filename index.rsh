@@ -1,6 +1,6 @@
 "reach 0.1";
 
-const [isOutcome, A_WINS, DRAW, B_WINS, CONTINUE] = makeEnum(4);
+const [isOutcome, A_WINS, DRAW, B_WINS] = makeEnum(3);
 
 const winner = (bobTotal, aliceTotal) => {
   if (bobTotal > 21 || (aliceTotal < 22 && aliceTotal > bobTotal)) {
