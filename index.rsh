@@ -15,6 +15,7 @@ const winner = (bobTotal, aliceTotal) => {
 const Player = {
   ...hasRandom,
   dealCards: Fun([], Tuple(UInt, Bytes(8))), // this would return an array whose first element is the sum of the cards and the second element is the first card
+  informTimeout: Fun([], Null),
   seeOutcome: Fun([UInt], Null),
   viewOpponentCards: Fun([Bytes(8)], Null),
 };
@@ -23,6 +24,7 @@ export const main = Reach.App(() => {
   const Alice = Participant("Alice", {
     ...Player,
     wager: UInt,
+    deadline: UInt,
     revealCards: Fun([], Bytes(8)),
   });
 
@@ -33,11 +35,18 @@ export const main = Reach.App(() => {
 
   init();
 
+  const informTimeout = () => {
+    each([Alice, Bob], () => {
+      interact.informTimeout();
+    });
+  };
+
   Alice.only(() => {
     const wager = declassify(interact.wager);
+    const deadline = declassify(interact.deadline);
   });
 
-  Alice.publish(wager).pay(wager);
+  Alice.publish(wager, deadline).pay(wager);
 
   commit();
 
@@ -45,7 +54,9 @@ export const main = Reach.App(() => {
     interact.acceptWager(wager);
   });
 
-  Bob.pay(wager);
+  Bob.pay(wager).timeout(relativeTime(deadline), () =>
+    closeTo(Alice, informTimeout)
+  );
 
   commit();
 
@@ -68,7 +79,10 @@ export const main = Reach.App(() => {
     const [bobCardsTotal, bobCardsVisible] = declassify(interact.dealCards());
   });
 
-  Bob.publish(bobCardsTotal, bobCardsVisible);
+  Bob.publish(bobCardsTotal, bobCardsVisible).timeout(
+    relativeTime(deadline),
+    () => closeTo(Alice, informTimeout)
+  );
 
   commit();
 
@@ -78,7 +92,10 @@ export const main = Reach.App(() => {
     const aliceFinalCards = declassify(interact.revealCards());
   });
 
-  Alice.publish(aliceCardsTotal, aliceFinalCards);
+  Alice.publish(aliceCardsTotal, aliceFinalCards).timeout(
+    relativeTime(deadline),
+    () => closeTo(Bob, informTimeout)
+  );
 
   Bob.interact.viewOpponentCards(aliceFinalCards);
 

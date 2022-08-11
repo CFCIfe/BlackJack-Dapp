@@ -120,7 +120,7 @@ const randomCards = () => {
       randomCards();
     }
     return [blackJackGame.deployer.score, blackJackGame.deployer.cards];
-  } else {
+  } else 
     randomCards();
     randomCards();
 
