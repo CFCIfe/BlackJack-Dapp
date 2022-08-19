@@ -3,7 +3,7 @@ import { useState } from "react";
 export function PasteContractInfo({ attach }) {
   const [contractInfo, setContractInfo] = useState("");
   return (
-    <div>
+    <div className="Paster_CtcInfo">
       <textarea
         placeholder="Paste Contract Info"
         value={contractInfo}

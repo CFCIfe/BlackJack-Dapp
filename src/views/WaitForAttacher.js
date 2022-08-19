@@ -1,8 +1,10 @@
 export function WaitForAttacher({ contractInfo }) {
   return (
     <div>
-      <h2>Waiting for attacher</h2>
-      <h3>Contract Info: {contractInfo}</h3>
+        <div className="Wait_For_Attacher">
+            <h2 className="animate">Waiting for attacher...</h2>
+            <textarea value={contractInfo} disabled/>
+        </div>
     </div>
   );
 }

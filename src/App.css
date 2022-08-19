@@ -9,32 +9,80 @@
 }
 
 /* utility class  */
-
+* {
+  outline: none;
+  border: none;
+}
 h1 {
   font-size: 2rem;
 }
 button {
-  padding: 0.7rem 1rem;
+  padding: 10px;
   border-radius: 5px;
-  font-size: 1.5rem;
-  outline: none;
-  border: none;
+  font-size: 1rem;
   color: var(--green-clor);
   background-color: var(--dark-yellow--color);
   font-weight: 600;
   letter-spacing: 2px;
-  margin: 5px;
   cursor: pointer;
   transition: ease 0.5s;
+  margin: 10px;
 }
+
+button:hover{
+  background-color: antiquewhite;
+  color: #282c34;
+}
+
+textarea{
+  width: 400px;
+  height: 150px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 15px;
+  border: 1px solid var(--black--color);
+}
+
+hr{
+  width: 10px;
+}
+
+input{
+  border-radius: 5px;
+  height: 30px;
+  padding: 3px 0px;
+  text-align: center;
+  font-size: 19px;
+  border: 1px solid var(--black--color);
+}
+
 
 /* App styling */
 
 .App {
-  width: 90%;
+  width: 100vw;
   margin: 0 auto;
   text-align: center;
-  margin-top: 2rem;
-  font-family: "Poppins", sans-serif;
+  margin: 2rem;
   /* background-color: r; */
 }
+
+
+
+.Intro {
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s ease-in;
+}
+
+.Intro__sub {
+  color: var(--red-color);
+}
+.Intro__span {
+  color: var(--green-clor);
+}
+
+
+

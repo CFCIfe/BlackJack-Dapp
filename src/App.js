@@ -21,6 +21,7 @@ import {
 } from "./views/";
 
 import { Card } from "./cardComponents/index";
+import { Header } from "./components/Header.js";
 
 const reach = loadStdlib("ALGO");
 reach.setWalletFallback(
@@ -33,7 +34,7 @@ function App() {
   // const [view, setView] = useState(views.GAME_PLAY);
 
   const [account, setAccount] = useState({});
-  const [contractInfo, setContractInfo] = useState("");
+  const [contractInfo, setContractInfo] = useState();
   const [isAlice, setIsAlice] = useState(true);
   const [wager, setWager] = useState();
   const [resolver, setResolver] = useState({ resolve: () => null });
@@ -82,7 +83,7 @@ function App() {
     },
 
     attach: (contractInfo) => {
-      const contract = account.contract(backend, contractInfo);
+      const contract = account.contract(backend, JSON.parse(contractInfo));
       backend.Bob(contract, Bob);
     },
   };
@@ -195,7 +196,12 @@ function App() {
   return (
     <div className="App">
       <div className="topnav">
-        <h1>BlackJack UI</h1>
+      <Header
+          text2="BlackJack"
+          span="Game"
+          spanClass="Intro__span"
+          class2="Intro__sub"
+        />
       </div>
 
       {view === views.CONNECT_ACCOUNT && (

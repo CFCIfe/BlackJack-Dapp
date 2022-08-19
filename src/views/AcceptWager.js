@@ -1,6 +1,6 @@
 export function AcceptWager({ wager, standardUnit, accept, decline }) {
   return (
-    <div>
+    <div className="Accept_wager">
       <h2>
         Wager: {wager} {standardUnit}
       </h2>
