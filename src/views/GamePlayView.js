@@ -106,7 +106,7 @@ export function GamePlayView ({ onCardsChange, opponentCards, isAlice, canViewAl
     }, []);
 
     return (
-        <div>
+        <div className='player-board'>
             { waiting && <p> Waiting...</p> }
 
             <div className="player-info-wrapper">
@@ -114,7 +114,9 @@ export function GamePlayView ({ onCardsChange, opponentCards, isAlice, canViewAl
                     <p style={{ fontSize: '1.5rem' }}>Your Cards</p>
 
                     <div>
-                        <p style={{ top: '100px' }}>{ `Total Value: ${totalCardValue}`  }</p>
+                        <p style={{ top: '100px' }}>
+                        { totalCardValue < 21 ?`Total Value: ${totalCardValue}` : `Burst`}
+                        </p>
                     </div>
                     <button 
                         onClick={pickExtraCard}
@@ -134,7 +136,7 @@ export function GamePlayView ({ onCardsChange, opponentCards, isAlice, canViewAl
                 </div>
             </div>
 
-            <hr style={{ margin: '20px 0' }}/>
+            <hr style={{ margin: '2px 0' }}/>
 
             <div className="player-info-wrapper">
                 <div className='player-info'>

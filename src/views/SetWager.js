@@ -3,7 +3,7 @@ import { useState } from "react";
 export function SetWager({ deploy }) {
   const [wager, setWager] = useState(0);
   return (
-    <div>
+    <div className="Set_Wager">
       <input
         name="wager"
         type={"number"}

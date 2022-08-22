@@ -17,12 +17,14 @@
   background: #fff;
   width: 14rem;
   /* min-height: 20rem; */
-  height: 30rem;
+  /* height: 10rem; */
   border-radius: 7px;
   margin: 10px;
   border: 1px solid #dddada;
   box-shadow: 2px 4px #ddd9d9;
   position: relative;
+  overflow: hidden;
+
 }
 
 .card-container .flipped-card {
@@ -43,8 +45,8 @@
 }
 .card-content-inner__border-top,
 .card-content-inner__border-bottom {
-  height: 10%;
-  height: 15rem;
+  /* height: 10%; */
+  /* height: 15rem; */
 }
 .card-content__inner {
   display: flex;
@@ -52,7 +54,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: inherit;
+  /* height: 20px; */
 }
 .card-content-inner__border-top,
 .card-content-inner__border-bottom {

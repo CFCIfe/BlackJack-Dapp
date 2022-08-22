@@ -4,7 +4,7 @@ export function ConnectAccount({ connect }) {
   const [secret, setSecret] = useState("");
 
   return (
-    <div>
+    <div className="Connect">
       <button onClick={() => connect()}>Connect To MyAlgoConnect Wallet</button>
       <hr />
       <div className="mnemonic">

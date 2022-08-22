@@ -2,7 +2,7 @@ import { GameOutcome } from "../utils/constants";
 
 export function GameOutcomeView ({ outcome }) {
     return (
-      <div>
+      <div className="Outcome">
         <h2>
             {
                 outcome === GameOutcome.WINNER?
@@ -15,7 +15,7 @@ export function GameOutcomeView ({ outcome }) {
             }
         </h2>
         <button onClick={() => window.location.reload()}>
-          Refresh Game
+          Play Again
         </button>
       </div>
     );

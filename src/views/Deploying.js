@@ -1,10 +1,10 @@
-//import Loader from "../components/Loader";
+import Loader from "../components/Loader";
 
 export function Deploying() {
   return (
-    <div>
+    <div className="Deploying">
       {/* <Loader>Deploying</Loader> */}
-      <p>Deploying</p>
+      <Loader>Deploying..</Loader>
     </div>
   );
 }

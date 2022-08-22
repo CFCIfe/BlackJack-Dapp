@@ -33,9 +33,9 @@ button:disabled {
   align-items: center;
 }
 
-.player-card-holder {
+/* .player-card-holder {
   flex: 1;
-}
+} */
 
 .player-info-wrapper {
   margin-bottom: 20px;
@@ -62,4 +62,23 @@ button:disabled {
   position: absolute;
   top: 40px;
   left: 40px;
+}
+
+.Connect,
+.Deploy_Attach,
+.Set_Wager,
+.Deploying,
+.Wait_For_Attacher,
+.Paster_CtcInfo,
+.Accept_wager,
+.Attaching,
+.Outcome {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
+  align-items: center;
+  text-align: center;
 }
