@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import CenterCardElement from "./CenterCardElement";
 import BorderCardFigureConditions from "./BorderCardFigureConditions";
 

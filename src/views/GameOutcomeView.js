@@ -1,5 +1,5 @@
 import { GameOutcome } from "../utils/constants";
-import React, { Component } from "react";
+import React from "react";
 export function GameOutcomeView({ outcome }) {
   return (
     <div className="Outcome">

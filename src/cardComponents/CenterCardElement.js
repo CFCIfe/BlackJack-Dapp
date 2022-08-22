@@ -1,5 +1,5 @@
+import React from "react";
 import FigureCardCenter from "./FigureCardCenter";
-import React, { Component } from "react";
 const CenterCardElement = ({ number, symbol, name }) => {
   return (
     <>
@@ -7,7 +7,7 @@ const CenterCardElement = ({ number, symbol, name }) => {
         index += 1;
         return (
           <span className="centerCard" key={index}>
-            <span className="center-symbol-sigle">
+            <span className="center-symbol-single">
               {number >= 0 && number <= 10 ? symbol : ""}
             </span>
           </span>

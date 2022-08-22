@@ -1,7 +1,7 @@
+import React from "react";
 import CardSkeleton from "./Card";
-import { colors, numbers, symbols } from "./data";
+import { colors } from "./data";
 import { blackJackGame } from "../utils/constants";
-import React, { Component } from "react";
 
 // takes in num of card to display on the screen - https://blog.devgenius.io/react-js-tutorial-how-to-implement-a-shuffle-card-game-from-scratch-c994277d38b3
 const CardHolder = ({ cards = [] }) => {

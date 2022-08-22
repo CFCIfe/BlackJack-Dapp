@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { symbols } from "../cardComponents/data";
 import CardHolder from "../cardComponents/CardHolder";
 import { blackJackGame } from "../utils/constants";
@@ -13,7 +12,6 @@ export function GamePlayView({
   submitCards,
 }) {
   const [totalCardValue, setTotalCardValue] = useState(0);
-  const [opponentCardValue, setOpponentCardValue] = useState(0);
   const [cards, setCards] = useState([]);
   const [opponentCardSymbols, setOpponentCardSymbols] = useState([]);
   const [waiting, setWaiting] = useState(false);
@@ -150,9 +148,6 @@ export function GamePlayView({
       <div className="player-info-wrapper">
         <div className="player-info">
           <p style={{ fontSize: "1.5rem" }}>Opponent Cards</p>
-          {/* <div>
-                        <p style={{ top: '170px' }}>{ `Total Value: ${opponentCardValue}`  }</p>
-                    </div> */}
         </div>
         <div className="player-card-holder">
           <CardHolder cards={parseOpponentCards()} />

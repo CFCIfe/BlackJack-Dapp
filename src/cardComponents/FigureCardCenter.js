@@ -1,3 +1,4 @@
+import React from "react";
 import JackOfClub from "./figureComponents/JackOfClub";
 import JackOfDiamond from "./figureComponents/JackOfDiamond";
 import JackOfHeart from "./figureComponents/JackOfHeart";
@@ -10,8 +11,6 @@ import QueenOfClub from "./figureComponents/QueenOfClub";
 import QueenOfDiamond from "./figureComponents/QueenOfDiamond";
 import QueenOfHeart from "./figureComponents/QueenOfHeart";
 import QueenOfSpade from "./figureComponents/QueenOfSpade";
-
-import React, { Component } from "react";
 
 const FigureCardCenter = ({ name, number }) => {
   const FigureContent = () => {

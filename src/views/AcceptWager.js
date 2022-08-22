@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 export function AcceptWager({ wager, standardUnit, accept, decline }) {
   return (
     <div className="Accept_wager">

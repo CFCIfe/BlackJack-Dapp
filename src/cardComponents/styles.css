@@ -24,7 +24,6 @@
   box-shadow: 2px 4px #ddd9d9;
   position: relative;
   overflow: hidden;
-
 }
 
 .card-container .flipped-card {
@@ -91,7 +90,7 @@
 .bottom-symbol {
   align-items: flex-end;
 }
-.center-symbol-sigle {
+.center-symbol-single {
   font-size: 72px;
 }
 

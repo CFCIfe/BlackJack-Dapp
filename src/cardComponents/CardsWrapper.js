@@ -1,5 +1,5 @@
 import CardSkeleton from "./Card";
-import React, { component } from "react";
+import React from "react";
 import { colors, numbers, symbols } from "./data";
 import useRandomValueFromArray from "./useRandomValueFromArray";
 

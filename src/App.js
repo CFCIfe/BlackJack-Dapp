@@ -1,11 +1,10 @@
+import React, { useState } from "react";
 import * as backend from "./reach/build/index.main.mjs";
 import { loadStdlib } from "@reach-sh/stdlib";
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
 
 import "./App.css";
 import { views, GameOutcome, blackJackGame } from "./utils/constants.js";
-import { useState } from "react";
-import React, { Component } from "react";
 
 //views
 import {
@@ -21,7 +20,6 @@ import {
   GamePlayView,
 } from "./views/";
 
-import { Card } from "./cardComponents/index";
 import { Header } from "./components/Header.js";
 
 const reach = loadStdlib("ALGO");

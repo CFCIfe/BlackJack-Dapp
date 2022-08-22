@@ -1,5 +1,5 @@
 import Loader from "../components/Loader";
-import React, { Component } from "react";
+import React from "react";
 
 export function Attaching() {
   return (
