@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
-=======
-import React, { Component } from "react";
-import { useEffect, useState } from "react";
->>>>>>> parent of 2de51fe... little changes
 import { symbols } from "../cardComponents/data";
 import CardHolder from "../cardComponents/CardHolder";
 import { blackJackGame } from "../utils/constants";
@@ -89,168 +83,68 @@ export function GamePlayView({
       } else {
         const newSymbol = symbols[Math.floor(Math.random() * symbols.length)];
         newSymbols.push(newSymbol);
-=======
-import { useEffect, useState } from 'react';
-import { symbols } from '../cardComponents/data';
-import CardHolder from "../cardComponents/CardHolder"
-import { blackJackGame } from '../utils/constants';
-import "./styles.css";
-
-export function GamePlayView ({ onCardsChange, opponentCards, isAlice, canViewAllOpponentCards, submitCards }) {
-    const [totalCardValue, setTotalCardValue] = useState(0);
-    const [opponentCardValue, setOpponentCardValue] = useState(0);
-    const [cards, setCards] = useState([]);
-    const [opponentCardSymbols, setOpponentCardSymbols] = useState([]);
-    const [waiting, setWaiting] = useState(false);
-
-    function pickRandomCard() {
-        const randomCard = blackJackGame["cards"][Math.floor(Math.random() * 11) + 1];
-        const cardValue = blackJackGame.cardsMap[randomCard];
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
->>>>>>> parent of b7a7116... JSX fix done
-
         return {
-            card: randomCard,
-            cardValue,
-            symbol,
-        }
+          card: value,
+          symbol: newSymbol,
+        };
+      }
+    });
+
+    if (newSymbols.length > 0) {
+      setOpponentCardSymbols([...opponentCardSymbols, ...newSymbols]);
     }
 
-    function pickFirstTwoCards() {
-        const firstCard = pickRandomCard();
-        const secondCard = pickRandomCard();
+    return parsedCards.length > 0
+      ? canViewAllOpponentCards || isAlice
+        ? parsedCards
+        : [{ card: "0", symbol: opponentCardSymbols[0] }, ...parsedCards]
+      : [];
+  }
 
-        setTotalCardValue(firstCard.cardValue + secondCard.cardValue);
+  const dealCards = () => {
+    let cardString = cards.map((value) => value.card).join("");
 
-        onCardsChange([firstCard.card, secondCard.card].join(''));
+    setWaiting(true);
 
-        setCards([
-            {
-                card: firstCard.card,
-                symbol: firstCard.symbol
-            },
-            {
-                card: secondCard.card,
-                symbol: secondCard.symbol
-            }
-        ])
-    }
+    if (isAlice) cardString = cardString.slice(1);
 
-    function pickExtraCard() {
-        const card = pickRandomCard();
+    submitCards([totalCardValue, cardString]);
+  };
 
-        setTotalCardValue((value) => value + card.cardValue);
+  useEffect(() => {
+    pickFirstTwoCards();
 
-        const cardStrings = [...cards, { card: card.card, symbol: card.symbol }].map((value) => value.card).join('');
+    const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+    setOpponentCardSymbols([symbol]);
+  }, []);
 
-        onCardsChange(cardStrings);
+  return (
+    <div className="player-board">
+      {waiting && <p> Waiting...</p>}
 
-<<<<<<< HEAD
       <div className="player-info-wrapper">
         <div className="player-info">
-          <p style={{ fontSize: "1.5rem" }}>Opponent Cards</p>
-=======
-        setCards([...cards, { card: card.card, symbol: card.symbol }]);
+          <p style={{ fontSize: "1.5rem" }}>Your Cards</p>
 
-    }
+          <div>
+            <p style={{ top: "100px" }}>
+              {totalCardValue < 21 ? `Total Value: ${totalCardValue}` : `Burst`}
+            </p>
+          </div>
+          <button onClick={pickExtraCard} disabled={waiting}>
+            Pick an extra card
+          </button>
+          <button onClick={dealCards} disabled={waiting}>
+            Submit
+          </button>
+        </div>
+        <div className="player-card-holder">
+          <CardHolder cards={cards} />
+        </div>
+      </div>
 
-<<<<<<< HEAD
-    function parseOpponentCards() {
-        let newSymbols = [];
+      <hr style={{ margin: "2px 0" }} />
 
-        const parsedCards = opponentCards.map((value, index) => {
-            if (opponentCardSymbols[canViewAllOpponentCards || isAlice? index : index + 1]) {
-        
-                return {
-                    card: value,
-                    symbol: opponentCardSymbols[canViewAllOpponentCards || isAlice? index : index + 1]
-                }
-            }
-            else {
-                const newSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-                newSymbols.push(newSymbol);
-
-                return {
-                    card: value,
-                    symbol: newSymbol,
-                }
-            }
-        })
-
-        if (newSymbols.length > 0) {
-            setOpponentCardSymbols([ ...opponentCardSymbols, ...newSymbols ])
-        }
-
-        return parsedCards.length > 0?
-            canViewAllOpponentCards || isAlice? parsedCards : [{ card: '0', symbol: opponentCardSymbols[0] }, ...parsedCards]
-            :
-            []
-    }
-
-    const dealCards = () => {
-        let cardString = cards.map((value) => value.card).join('');
-
-        setWaiting(true);
-
-        if (isAlice) cardString = cardString.slice(1);
-
-        submitCards([totalCardValue, cardString]);
-    }
-
-    useEffect(() => {
-        pickFirstTwoCards();
-
-        const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-        setOpponentCardSymbols([symbol]);
-    }, []);
-
-    return (
-        <div className='player-board'>
-            { waiting && <p> Waiting...</p> }
-
-            <div className="player-info-wrapper">
-                <div className='player-info'>
-                    <p style={{ fontSize: '1.5rem' }}>Your Cards</p>
-
-                    <div>
-                        <p style={{ top: '100px' }}>
-                        { totalCardValue < 21 ?`Total Value: ${totalCardValue}` : `Burst`}
-                        </p>
-                    </div>
-                    <button 
-                        onClick={pickExtraCard}
-                        disabled = { waiting }
-                    >
-                        Pick an extra card
-                    </button>
-                    <button
-                        onClick={dealCards}
-                        disabled = { waiting }
-                    >
-                        Submit
-                    </button>
-                </div>
-                <div className="player-card-holder">
-                    <CardHolder cards={cards}/>
-                </div>
-            </div>
-
-            <hr style={{ margin: '2px 0' }}/>
-
-            <div className="player-info-wrapper">
-                <div className='player-info'>
-                    <p style={{ fontSize: '1.5rem' }}>Opponent Cards</p>
-                    {/* <div>
-                        <p style={{ top: '170px' }}>{ `Total Value: ${opponentCardValue}`  }</p>
-                    </div> */}
-                </div>
-                <div className="player-card-holder">
-                    <CardHolder cards={parseOpponentCards()}/>
-                </div>
-            </div>
-            
->>>>>>> parent of b7a7116... JSX fix done
-=======
       <div className="player-info-wrapper">
         <div className="player-info">
           <p style={{ fontSize: "1.5rem" }}>Opponent Cards</p>
@@ -260,7 +154,8 @@ export function GamePlayView ({ onCardsChange, opponentCards, isAlice, canViewAl
         </div>
         <div className="player-card-holder">
           <CardHolder cards={parseOpponentCards()} />
->>>>>>> parent of 2de51fe... little changes
         </div>
-    )
+      </div>
+    </div>
+  );
 }

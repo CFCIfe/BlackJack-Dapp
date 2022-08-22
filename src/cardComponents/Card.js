@@ -1,23 +1,12 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 import React from "react";
-=======
->>>>>>> parent of b7a7116... JSX fix done
-=======
-import React, { Component } from "react";
->>>>>>> parent of 2de51fe... little changes
 import CenterCardElement from "./CenterCardElement";
 import BorderCardFigureConditions from "./BorderCardFigureConditions";
 
 const CardSkeleton = ({ number, color, symbol, name }) => {
   return (
     <div className="card-container">
-      {
-        number === 0 && (
-          <div className="flipped-card"></div>
-        )
-      }
-      
+      {number === 0 && <div className="flipped-card"></div>}
+
       <div className={`card-content__inner ${name}`}>
         <div className={`card-content-inner__border-top ${color}`}>
           <div className="top-symbol ">
