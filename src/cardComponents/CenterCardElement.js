@@ -1,5 +1,9 @@
 import React from "react";
 import FigureCardCenter from "./FigureCardCenter";
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of b7a7116... JSX fix done
 const CenterCardElement = ({ number, symbol, name }) => {
   return (
     <>

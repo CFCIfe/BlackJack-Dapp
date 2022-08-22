@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import { useState } from "react";
+>>>>>>> parent of b7a7116... JSX fix done
 
 export function PasteContractInfo({ attach }) {
   const [contractInfo, setContractInfo] = useState("");

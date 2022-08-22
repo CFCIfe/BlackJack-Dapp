@@ -1,6 +1,9 @@
 import "./styles.css";
 import CardsWrapper from "./CardsWrapper";
+<<<<<<< HEAD
 import React from "react";
+=======
+>>>>>>> parent of b7a7116... JSX fix done
 
 function Card() {
   return (

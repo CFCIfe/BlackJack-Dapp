@@ -1,5 +1,8 @@
 import CardSkeleton from "./Card";
+<<<<<<< HEAD
 import React from "react";
+=======
+>>>>>>> parent of b7a7116... JSX fix done
 import { colors, numbers, symbols } from "./data";
 import useRandomValueFromArray from "./useRandomValueFromArray";
 

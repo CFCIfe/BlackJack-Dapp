@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import React from "react";
+=======
+>>>>>>> parent of b7a7116... JSX fix done
 export function DeployOrAttach({ setAsDeployer }) {
   return (
     <div className="Deploy_Attach">

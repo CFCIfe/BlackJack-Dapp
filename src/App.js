@@ -5,6 +5,10 @@ import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
 
 import "./App.css";
 import { views, GameOutcome, blackJackGame } from "./utils/constants.js";
+<<<<<<< HEAD
+=======
+import { useState } from "react";
+>>>>>>> parent of b7a7116... JSX fix done
 
 //views
 import {
@@ -17,7 +21,7 @@ import {
   SetWager,
   WaitForAttacher,
   GameOutcomeView,
-  GamePlayView,
+  GamePlayView
 } from "./views/";
 
 import { Header } from "./components/Header.js";
@@ -39,10 +43,8 @@ function App() {
   const [resolver, setResolver] = useState({ resolve: () => null });
   const [gameOutcome, setGameOutcome] = useState(GameOutcome.UNDECIDED);
   const [opponentCards, setOpponentCards] = useState([]);
-  const [myCards, setMyCards] = useState("");
-  const [hasSeenSomeOpponentCards, setHasSeenSomeOpponentCards] = useState(
-    false
-  );
+  const [myCards, setMyCards] = useState('');
+  const [hasSeenSomeOpponentCards, setHasSeenSomeOpponentCards] = useState(false);
   const [canViewAllOpponentCards, setCanViewAllOpponentCards] = useState(false);
 
   const reachFunctions = {
@@ -102,9 +104,9 @@ function App() {
 
       return await new Promise((resolve) => {
         setResolver({
-          resolve,
-        });
-      });
+          resolve
+        })
+      })
     },
 
     seeOutcome: async (value) => {
@@ -112,11 +114,13 @@ function App() {
       console.log("The outcome is", outcome);
 
       if (outcome === 0) {
-        setGameOutcome(isAlice ? GameOutcome.WINNER : GameOutcome.LOSS);
-      } else if (outcome === 1) {
-        setGameOutcome(GameOutcome.DRAW);
-      } else {
-        setGameOutcome(isAlice ? GameOutcome.LOSS : GameOutcome.WINNER);
+        setGameOutcome(isAlice? GameOutcome.WINNER : GameOutcome.LOSS)
+      }
+      else if (outcome === 1) {
+        setGameOutcome(GameOutcome.DRAW)
+      }
+      else {
+        setGameOutcome(isAlice? GameOutcome.LOSS : GameOutcome.WINNER)
       }
 
       setView(views.SEE_WINNER);
@@ -134,18 +138,20 @@ function App() {
         }
       });
 
-      setOpponentCards(returnedCards.split(""));
+      setOpponentCards(returnedCards.split(''));
 
       if (isAlice) {
         setCanViewAllOpponentCards(true);
-      } else {
+      }
+      else {
         if (hasSeenSomeOpponentCards) {
           setCanViewAllOpponentCards(true);
-        } else {
+        }
+        else {
           setHasSeenSomeOpponentCards(true);
         }
       }
-    },
+    }
   };
 
   const Alice = {
@@ -165,8 +171,8 @@ function App() {
     },
 
     revealCards: () => {
-      return myCards;
-    },
+      return myCards
+    }
   };
 
   const Bob = {
@@ -188,12 +194,12 @@ function App() {
 
   const handleCardsChange = (cards) => {
     setMyCards(cards);
-  };
+  }
 
   return (
     <div className="App">
       <div className="topnav">
-        <Header
+      <Header
           text2="BlackJack"
           span="Game"
           spanClass="Intro__span"
@@ -232,17 +238,17 @@ function App() {
 
       {view === views.ATTACHING && <Attaching />}
 
-      {view === views.SEE_WINNER && <GameOutcomeView outcome={gameOutcome} />}
+      { view === views.SEE_WINNER && <GameOutcomeView outcome={gameOutcome}/> }
 
-      {view === views.GAME_PLAY && (
-        <GamePlayView
-          onCardsChange={handleCardsChange}
-          opponentCards={opponentCards}
-          isAlice={isAlice}
-          canViewAllOpponentCards={canViewAllOpponentCards}
-          submitCards={resolver.resolve}
-        />
-      )}
+      { view === views.GAME_PLAY && 
+        <GamePlayView 
+          onCardsChange = { handleCardsChange }
+          opponentCards = { opponentCards }
+          isAlice = { isAlice }
+          canViewAllOpponentCards = { canViewAllOpponentCards }
+          submitCards = { resolver.resolve }
+        /> 
+      }
     </div>
   );
 }

@@ -42,11 +42,6 @@
 .card-content-inner__border-bottom {
   width: 90%;
 }
-.card-content-inner__border-top,
-.card-content-inner__border-bottom {
-  /* height: 10%; */
-  /* height: 15rem; */
-}
 .card-content__inner {
   display: flex;
   flex-direction: column;
@@ -71,8 +66,8 @@
   justify-content: center;
   margin-top: -1rem;
 }
-.top-symbol-sigle,
-.bottom-symbol-sigle {
+.top-symbol-single,
+.bottom-symbol-single {
   text-align: center;
   width: 100%;
 }

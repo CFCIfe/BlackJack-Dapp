@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import { useState } from "react";
+>>>>>>> parent of b7a7116... JSX fix done
 
 export function ConnectAccount({ connect }) {
   const [secret, setSecret] = useState("");
