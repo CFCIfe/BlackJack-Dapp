@@ -11,6 +11,8 @@ import QueenOfDiamond from "./figureComponents/QueenOfDiamond";
 import QueenOfHeart from "./figureComponents/QueenOfHeart";
 import QueenOfSpade from "./figureComponents/QueenOfSpade";
 
+import React, { Component } from "react";
+
 const FigureCardCenter = ({ name, number }) => {
   const FigureContent = () => {
     switch (number) {

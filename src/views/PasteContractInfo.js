@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React, { Component } from "react";
 
 export function PasteContractInfo({ attach }) {
   const [contractInfo, setContractInfo] = useState("");

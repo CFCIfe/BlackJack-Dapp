@@ -1,5 +1,5 @@
 import FigureCardCenter from "./FigureCardCenter";
-
+import React, { Component } from "react";
 const CenterCardElement = ({ number, symbol, name }) => {
   return (
     <>

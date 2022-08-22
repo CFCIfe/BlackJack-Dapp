@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React, { Component } from "react";
 
 export function SetWager({ deploy }) {
   const [wager, setWager] = useState(0);

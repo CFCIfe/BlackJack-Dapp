@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React, { Component } from "react";
 
 export function ConnectAccount({ connect }) {
   const [secret, setSecret] = useState("");

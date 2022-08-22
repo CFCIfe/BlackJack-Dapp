@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 export * from "./AcceptWager";
 export * from "./Attaching";
 export * from "./ConnectAccount";

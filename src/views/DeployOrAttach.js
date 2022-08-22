@@ -1,3 +1,4 @@
+import React, { Component } from "react";
 export function DeployOrAttach({ setAsDeployer }) {
   return (
     <div className="Deploy_Attach">
