@@ -1,9 +1,12 @@
-import React from "react";
 import FigureCardCenter from "./FigureCardCenter";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 
 >>>>>>> parent of b7a7116... JSX fix done
+=======
+import React, { Component } from "react";
+>>>>>>> parent of 2de51fe... little changes
 const CenterCardElement = ({ number, symbol, name }) => {
   return (
     <>
@@ -11,7 +14,7 @@ const CenterCardElement = ({ number, symbol, name }) => {
         index += 1;
         return (
           <span className="centerCard" key={index}>
-            <span className="center-symbol-single">
+            <span className="center-symbol-sigle">
               {number >= 0 && number <= 10 ? symbol : ""}
             </span>
           </span>

@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import * as backend from "./reach/build/index.main.mjs";
 import { loadStdlib } from "@reach-sh/stdlib";
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
@@ -6,9 +5,14 @@ import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
 import "./App.css";
 import { views, GameOutcome, blackJackGame } from "./utils/constants.js";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { useState } from "react";
 >>>>>>> parent of b7a7116... JSX fix done
+=======
+import { useState } from "react";
+import React, { Component } from "react";
+>>>>>>> parent of 2de51fe... little changes
 
 //views
 import {
@@ -24,6 +28,7 @@ import {
   GamePlayView
 } from "./views/";
 
+import { Card } from "./cardComponents/index";
 import { Header } from "./components/Header.js";
 
 const reach = loadStdlib("ALGO");

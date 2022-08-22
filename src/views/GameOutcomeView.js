@@ -1,6 +1,10 @@
 import { GameOutcome } from "../utils/constants";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React from "react";
+=======
+import React, { Component } from "react";
+>>>>>>> parent of 2de51fe... little changes
 export function GameOutcomeView({ outcome }) {
   return (
     <div className="Outcome">
