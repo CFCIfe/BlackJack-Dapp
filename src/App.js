@@ -101,11 +101,15 @@ function App() {
     dealCards: async () => {
       setView(views.GAME_PLAY);
 
-      return await new Promise((resolve) => {
+      const card = await new Promise((resolve) => {
         setResolver({
           resolve,
         });
       });
+
+      console.log(card);
+
+      return card;
     },
 
     seeOutcome: async (value) => {
