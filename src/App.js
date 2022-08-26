@@ -4,6 +4,7 @@ import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
 
 import "./App.css";
 import { views, GameOutcome, blackJackGame } from "./utils/constants.js";
+import { Loader } from "./utils/loader.jsx";
 import React, { useState } from "react";
 
 //views
@@ -216,7 +217,7 @@ function App() {
 
       {view === views.SET_WAGER && <SetWager deploy={reachFunctions.deploy} />}
 
-      {view === views.DEPLOYING && <Deploying />}
+      {(view === views.DEPLOYING || view === views.ATTACHING) && <Loader />}
 
       {view === views.WAIT_FOR_ATTACHER && (
         <WaitForAttacher contractInfo={contractInfo} />
