@@ -235,8 +235,8 @@ function App() {
           decline={() => setView(views.DEPLOY_OR_ATTACH)}
         />
       )}
-
-      {view === views.ATTACHING && <Attaching />}
+      {/* 
+      {view === views.ATTACHING && <Attaching />} */}
 
       {view === views.SEE_WINNER && <GameOutcomeView outcome={gameOutcome} />}
 
