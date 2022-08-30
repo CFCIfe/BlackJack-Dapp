@@ -1,6 +1,6 @@
 # [Decentralized Umoja III](https://events.reach.sh/decentralized-umoja-3) :technologist:
 
-This project contains our implementation of a [Blackjack-like game](https://events.reach.sh/decentralized-umoja-3#:~:text=lie%2C%20you%20lose.-,Blackjack,-A%20blackjack%2Dlike) with asymmetric payouta based on proximity to 21.
+This project contains our implementation of a [Blackjack-like game](https://events.reach.sh/decentralized-umoja-3#:~:text=lie%2C%20you%20lose.-,Blackjack,-A%20blackjack%2Dlike) with asymmetric payout based on proximity to 21.
 
 :computer: This Project was developed by:
 
