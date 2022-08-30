@@ -2,14 +2,13 @@
 
 This project contains our implementation of a [Blackjack-like game](https://events.reach.sh/decentralized-umoja-3#:~:text=lie%2C%20you%20lose.-,Blackjack,-A%20blackjack%2Dlike) with asymmetric payout based on proximity to 21.
 
-:computer: This Project was developed by:
-
-:man: [Peter Abolude](https://github.com/CFCIfe)
+:computer: This Project was developed by: :man: [Peter Abolude](https://github.com/CFCIfe)
 :man: [Samson Olusanya](https://github.com/Ayodeji63)
 :man: [Adebayo Saheed](https://github.com/adewaledev)
 
 :microphone: A big shout-out to [Nick Stanford](https://github.com/nstanford5/) for being available to us during the course of the project and [Paul Ogwulumba](https://github.com/paulogwulumba/), our mentor.
 
+---
 
 ### :question:	What is [Reach](https://docs.reach.sh/tut/overview/#overview)?
 
@@ -20,15 +19,14 @@ This project contains our implementation of a [Blackjack-like game](https://even
 
 [React](https://reactjs.org/docs/create-a-new-react-app.html) is [one of many](https://docs.reach.sh/frontend/#p_1) frameworks that can be implemented with [Reach](https://docs.reach.sh/tut/overview/#overview).
 
-:seedling: This boilerplate helps kickstart your development of a Reach dAPP using React frontend.
-
 ---
 
 ### USING [Our Program](https://github.com/CFCIfe/BlackJack-Dapp)
 
 #### File Directory
-.
-<pre>├── <font color="#3465A4"><b>build</b></font>
+
+<pre>.
+├── <font color="#3465A4"><b>build</b></font>
 │   ├── asset-manifest.json
 │   ├── backend.txt
 │   ├── favicon.ico
@@ -131,8 +129,6 @@ This project contains our implementation of a [Blackjack-like game](https://even
 
 </pre>
 
----
-
 #### Requirements:
 
 :computer: Reach - https://docs.reach.sh/tut/rps/#tut-1
@@ -149,13 +145,17 @@ This project contains our implementation of a [Blackjack-like game](https://even
 
 ```
 npm install
+```
 
-# From the project root path
+#### From the project root path
 
+```
 cd src/reach
+```
 
-# To compile to the latest version of REACH to check if no backend errors
+#### To compile to the latest version of REACH to check if no backend errors
 
+```
 ./reach compile
 ```
 
@@ -172,7 +172,9 @@ This opens a new browser with `localhost:3000` running.
 
 #### Deployer and Attacher view
 
-Open `localhost:3000` on separate browsers to test using [MyAlgo](https://wallet.myalgo.com/) Testnet or it's Mnemonic keys.
+Open `localhost:3000` on separate browsers to test using [MyAlgo](https://wallet.myalgo.com/) Testnet or using [Mnemonic keys](./secrets.txt).
+
+If you intend to use our mnemonic keys in `./secrets.txt`, ensure you [make a deposit](https://bank.testnet.algorand.network/) to the contract address before testing. 
 
 Implement your backend changes in `src/reach/index.rsh`
 
@@ -180,4 +182,4 @@ Implement your backend changes in `src/reach/index.rsh`
 
 #### Demo Video
 
-[Click here](https://drive.google.com/file/d/138iQ1RRkfguv23ttQybPN7v-hDSjsA1w/view?usp=sharing)to watch our Demo video
+[Click here](https://drive.google.com/file/d/138iQ1RRkfguv23ttQybPN7v-hDSjsA1w/view?usp=sharing) to watch our Demo video
