@@ -183,3 +183,10 @@ Implement your backend changes in `src/reach/index.rsh`
 #### Demo Video
 
 [Click here](https://drive.google.com/file/d/138iQ1RRkfguv23ttQybPN7v-hDSjsA1w/view?usp=sharing) to watch our Demo video
+
+---
+
+
+#### Article
+
+[Click here](https://dev.to/cfcife/blackjack-game-4696) to read our Article
