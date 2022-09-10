@@ -190,3 +190,9 @@ Implement your backend changes in `src/reach/index.rsh`
 #### Article
 
 [Click here](https://dev.to/cfcife/blackjack-game-4696) to read our Article
+
+---
+
+#### Workshop
+
+[Click here](./workshop.md)
