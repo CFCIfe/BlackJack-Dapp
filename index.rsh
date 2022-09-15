@@ -14,7 +14,8 @@ const winner = (bobTotal, aliceTotal) => {
 
 const Player = {
   ...hasRandom,
-  dealCards: Fun([], Tuple(UInt, Bytes(8))), // this would return an array whose first element is the sum of the cards and the second element is the first card
+  dealCards: Fun([], Tuple(UInt, Bytes(8))), 
+  // this would return an array whose first element is the sum of the cards and the second element is the first card
   informTimeout: Fun([], Null),
   seeOutcome: Fun([UInt], Null),
   viewOpponentCards: Fun([Bytes(8)], Null),
