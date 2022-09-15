@@ -1,7 +1,5 @@
 # Blackjack Game
 
----
-
 This workshop will focus on creating an decentralized application that allows two players play a game of [Blackjack](https://en.wikipedia.org/wiki/Blackjack).
 
 Ensure you have gone through the [Rock Paper Scissors](https://docs.reach.sh/tut/rps/#tut) tutorial before attempting this.
@@ -25,8 +23,6 @@ $ ../reach init
 ```
 
 ## **Problem Analysis**
-
----
 
 Any program design process begins with a problem analysis to identify the information that is pertinent to the issue at hand.
 
@@ -56,7 +52,6 @@ Compare _your answers_ to _mine_:
 
 It's fine if your responses vary from ours. Problem analysis is a "loose" approach that mimics creative expression more than it does monotonous computation. But it doesn't imply it's unnecessary, extraneous, or unwanted.
 
----
 
 ## **Data Definition**
 
@@ -66,21 +61,22 @@ More details on [data types](https://docs.reach.sh/rsh/compute/#ref-programs-typ
 
 For our program we should decide:
 
-- What functions/values does Alice need to start the game?
-- What functions/values does Bob need to join the game?
-- What functions/values do the two players need to play and observe each other's moves?
-- What functions/values do the two players need to inform the contract of the value of their cards and assume their opponent has?
+> - What functions/values does Alice need to start the game?
+> - What functions/values does Bob need to join the game?
+> - What functions/values do the two players need to play and observe each other's moves?
+> - What functions/values do the two players need to inform the contract of the value of their cards and assume their opponent has?
 
 You should look back at your problem analysis to do this step. Whenever a participant starts off knowing something, then it is a field in the `interact` object. If they learn something, then it will be an argument to a function. If they provide something later, then it will be the result of a function.27
 
 You should write your answers in your Reach file (`index.rsh`) as the participant interact interface for each of the participants.
 
-#### **my data definitions**
+#### **My data definitions**
 
 ```javascript
 const Player = {
   ...hasRandom,
-  dealCards: Fun([], Tuple(UInt, Bytes(8))), // this would return an array whose first element is the sum of the cards and the second element is the first card
+   // this would return an array whose first element is the sum of the cards and the second element is the first card
+  dealCards: Fun([], Tuple(UInt, Bytes(8))),
   informTimeout: Fun([], Null),
   seeOutcome: Fun([UInt], Null),
   viewOpponentCards: Fun([Bytes(8)], Null),
@@ -99,17 +95,16 @@ const Bob = Participant("Bob", {
 });
 ```
 
-##### **Things to note**
+#### **Things to note**
 
-1. The cost of wager and deadline is represented as UInt ([unsigned integer](https://docs.reach.sh/rsh/compute/#rsh_UInt))
-2. Alice also has a `revealCards` function to reveal their card at the end of the game. It returns a string of 8 [Bytes](https://docs.reach.sh/rsh/compute/#rsh_Bytes)
-3. Both players share 4 more functions that perform the following respectively:
-   - inform the contract of the sum of their random cards and the first card
-   - Get informed of timeout
-   - Get informed of the winner by accepting the sum value of their cards
-   - Display the content of their hidden cards.
+> 1. The cost of wager and deadline is represented as UInt ([unsigned integer](https://docs.reach.sh/rsh/compute/#rsh_UInt))
+> 2. Alice also has a `revealCards` function to reveal their card at the end of the game. It returns a string of 8 [Bytes](https://docs.reach.sh/rsh/compute/#rsh_Bytes)
+> 3. Both players share 4 more functions that perform the following respectively:
+>  - Inform the contract of the sum of their random cards and the first card
+>  - Get informed of timeout
+>  - Get informed of the winner by accepting the sum value of their cards
+>  - Display the content of their hidden cards.
 
----
 
 ## **Communication Construction**
 
@@ -123,13 +118,11 @@ To write yours, check the sample from the [_Rock, Paper, Scissors!_](https://doc
 > 1. Alice set the wager and the deadline for the game
 > 2. Alice is dealt with two randoms cards, Alice can decide to pick or stand, thereafter Alice informs the consensus of their cards and total card score
 > 3. Alice publishes a digest of the cards and score
-> 4. Bob accepts conditions of the contract, and also gets two cards simultaneosuly
+> 4. Bob accepts conditions of the contract, and also gets two cards simultaneously
 > 5. Bob informs the contract of their cards and total cards score
 > 6. Alice hidden card and total cards score is published
 > 7. Consensus calculate the results, they are informed of the outcome
 > 8. 1.5 of the wager total is given to Bob if they win and half is returned to Alice for fairness, since their card was displayed. But if Alice wins the whole wager goes to them. In the even of Blackjack or a tie for both players, they split the funds equally.
-
-
 
 
 #### **Write down the communication pattern for the program as code**
@@ -182,20 +175,16 @@ if (outcome == A_WINS) {
 transfer(balance()).to(Alice);
 ```
 
-
 At this point, we are almost ready to complete our program and make it so that we can run it. You've probably noticed that in our samples, the variables  `aliceCardsVisible`, `bobCardsTotal`, `bobCardsVisible`, `aliceCardsTotal` and `aliceFinalCards` are undefined. We'll handle that next.
 
 
 ## **Interaction Introduction**
 
-
 Next we need to insert the appropriate calls to interact.
+
 In our program this means defining `aliceCardsVisible`, `bobCardsTotal`, `bobCardsVisible`, `aliceCardsTotal` and `aliceFinalCards`
 
-insert **interact** calls to the frontend into the program
-
-Here is what we did:
-
+To insert **interact** calls to the frontend into the program, here is what we did:
 
 ```javascript
 "reach 0.1";
@@ -312,29 +301,29 @@ export const main = Reach.App(() => {
 });
 ```
 
+In the above code we defined the values that would represent the current outcome of our game using an enum `isOutcome`.
 
+We also declared a function `winner` that calculates the results of both players. Then we declared variable `outcome` that receives the result, which will be revealed to the players, by the `seeOutcome` method.
 
-In the above code we defined the values that would represent the current outcome of our game using an enum `isOutcome` we also declared a function `winner`  that calculate the results of both players, we also declared variable `outcome` that recevie the result, which will be reveal to the players, by the `seeOutcome` method.
+Both Players can also see each other cards using the `viewOpponentCards` function.
 
-Both Players can also see each other cards using the **
-
-
-At this point when we:
-
+At this point when we run:
 
 ```bash
 $ ../reach compile
 ```
 
+We will get a pleasant message that all our theorems are true. 
 
-We will get a pleasant message that all our theroems are true. Nice Job, But we still needs to add some theorems
-
+Nice Job, But we still need to add some more theorems.
 
 ## **Additions**
 
 As of now, our code is flawless. But there are several areas where we can do better.
 
-To prevent players from taking too long to play their move or, worse yet, quitting a game in the middle, one option is to impose a timeout limit on each player. Naturally, we'll need a way to alert both players when a timeout happens. To that end, we'll define a function like follows:
+To prevent players from taking too long to play their move or, worse yet, quitting a game that has started, we imposed a timeout limit on each player.
+
+Naturally, we'll need a way to alert both players when a timeout happens. To that end, we'll define a function like follows:
 
 ```javascript
 const informTimeout = () => {
@@ -346,10 +335,9 @@ const informTimeout = () => {
 
 We will utilize the deadline value that Alice supplied when she constructed the contract to apply the timeout.
 
-When the timeout is implemented
+When the timeout is implemented:
 
-  * Bob is to pay the wager
-
+  * **Bob is to pay the wager**
 
 ```javascript
 Bob.pay(wager).timeout(relativeTime(deadline), () =>
@@ -357,11 +345,11 @@ Bob.pay(wager).timeout(relativeTime(deadline), () =>
 );
 ```
 
-* Bob is to make is move
-
+* **Bob is to make is move**
 
 ```javascript
 //........
+
 Bob.only(() => {
   const [bobCardsTotal, bobCardsVisible] = declassify(interact.dealCards());
 });
@@ -374,11 +362,11 @@ Bob.publish(bobCardsTotal, bobCardsVisible).timeout(
 //.............
 ```
 
-* Alice hidden card is to be revealed
-
+* **Alice hidden card is to be revealed**
 
 ```javascript
 //........
+
 Alice.only(() => {
   const aliceCardsTotal = declassify(_aliceCardsTotal);
   interact.viewOpponentCards(bobCardsVisible);
@@ -393,8 +381,7 @@ Alice.publish(aliceCardsTotal, aliceFinalCards).timeout(
 //.............
 ```
 
-### With all these changes our code will look like this:
-
+**With all these changes our code will look like this:**
 
 ```javascript
 "reach 0.1";
@@ -521,14 +508,16 @@ export const main = Reach.App(() => {
   exit();
 });
 ```
+
 ## Deployment Decisions
-We can write the frontend now that we have a complete contract. Because we will be connecting with an API to play the real Blackjack game, we need use a web frontend framework. It will be React in our situation.
+
+We can write the frontend now that we have a complete contract. Because we will be connecting with an API to play the real Blackjack game, we need use a web frontend framework. It will be [React](https://reactjs.org/docs/getting-started.html) in our situation.
 
 Stop! Incorporate frontend interact calls within the application.
 
 
 ```javascript
-  import * as backend from "./reach/build/index.main.mjs";
+import * as backend from "./reach/build/index.main.mjs";
 import { loadStdlib } from "@reach-sh/stdlib";
 import { ALGO_MyAlgoConnect as MyAlgoConnect } from "@reach-sh/stdlib";
 
@@ -562,8 +551,6 @@ const { standardUnit } = reach;
 
 function App() {
   const [view, setView] = useState(views.CONNECT_ACCOUNT);
-  // const [view, setView] = useState(views.GAME_PLAY);
-
   const [account, setAccount] = useState({});
   const [contractInfo, setContractInfo] = useState();
   const [isAlice, setIsAlice] = useState(true);
@@ -664,7 +651,7 @@ function App() {
 
       // check if it is a character
       splittedCard.forEach((char) => {
-        //check if the char in array is among accepted cards
+        //check if the character in array is among accepted cards
         if (blackJackGame.cards.indexOf(char) > -1) {
           returnedCards += char;
         }
@@ -765,8 +752,6 @@ function App() {
           decline={() => setView(views.DEPLOY_OR_ATTACH)}
         />
       )}
-      {/* 
-      {view === views.ATTACHING && <Attaching />} */}
 
       {view === views.SEE_WINNER && <GameOutcomeView outcome={gameOutcome} />}
 
@@ -784,9 +769,7 @@ function App() {
 }
 
 export default App;
-
 ```
-
 
 ## Discussion
 
@@ -794,4 +777,6 @@ Congratulations on finishing the workshop. You successfully implemented the Blac
 
 You can Play this game with your friends. 🧑‍🤝‍🧑🧑‍🤝‍🧑
 
-If you found this workshop rewarding, please let us know on the [Discord community!](https://discord.gg/AZsgcXu) If you want to know what to do next, you should check workshops.
+If you found this workshop rewarding, please let us know on the [Discord community!](https://discord.gg/AZsgcXu).
+
+If you want to know what to do next, you should checkout more [workshops](https://docs.reach.sh/tut/#tuts).
