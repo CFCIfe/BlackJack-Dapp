@@ -1,6 +1,6 @@
 # Blackjack Game
 
-This workshop will focus on creating an decentralized application that allows two players play a game of [Blackjack](https://en.wikipedia.org/wiki/Blackjack).
+This workshop will focus on creating a decentralized application that allows two players play a game of [Blackjack](https://en.wikipedia.org/wiki/Blackjack).
 
 Ensure you have gone through the [Rock Paper Scissors](https://docs.reach.sh/tut/rps/#tut) tutorial before attempting this.
 
@@ -64,7 +64,7 @@ For our program we should decide:
 > - What functions/values does Alice need to start the game?
 > - What functions/values does Bob need to join the game?
 > - What functions/values do the two players need to play and observe each other's moves?
-> - What functions/values do the two players need to inform the contract of the value of their cards and assume their opponent has?
+> - What functions/values do the two players need to inform the contract of the value of their cards?
 
 You should look back at your problem analysis to do this step. Whenever a participant starts off knowing something, then it is a field in the `interact` object. If they learn something, then it will be an argument to a function. If they provide something later, then it will be the result of a function.27
 
@@ -624,9 +624,6 @@ function App() {
           resolve,
         });
       });
-
-      console.log(card);
-
       return card;
     },
 
