@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b24b1eed-618e-4774-9963-f00262bdcf6b/deploy-status)](https://app.netlify.com/sites/eclectic-genie-b9d200/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b1dcc351-b8bd-41f4-839a-c25aca1a2fb1/deploy-status)](https://app.netlify.com/sites/blackjack-site/deploys)
 
 # [Decentralized Umoja III](https://events.reach.sh/decentralized-umoja-3) :technologist:
 
@@ -130,6 +130,10 @@ This project contains our implementation of a [Blackjack-like game](https://even
 └── yarn.lock
 
 </pre>
+
+#### Access Live Version
+
+You can access the live version of our app on https://blackjack-site.netlify.app/
 
 #### Requirements:
 
