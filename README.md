@@ -1,4 +1,5 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2de669f1-2d06-4e1b-9a83-01059c88f980/deploy-status)](https://app.netlify.com/sites/willowy-kashata-548075/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b24b1eed-618e-4774-9963-f00262bdcf6b/deploy-status)](https://app.netlify.com/sites/eclectic-genie-b9d200/deploys)
+
 # [Decentralized Umoja III](https://events.reach.sh/decentralized-umoja-3) :technologist:
 
 This project contains our implementation of a [Blackjack-like game](https://events.reach.sh/decentralized-umoja-3#:~:text=lie%2C%20you%20lose.-,Blackjack,-A%20blackjack%2Dlike) with asymmetric payout based on proximity to 21.
