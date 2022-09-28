@@ -12,6 +12,12 @@ This project contains our implementation of a [Blackjack-like game](https://even
 
 ---
 
+#### Access Live Version
+
+You can access the live version of our app on https://blackjack-site.netlify.app/
+
+---
+
 ### :question:	What is [Reach](https://docs.reach.sh/tut/overview/#overview)?
 
 
@@ -130,10 +136,6 @@ This project contains our implementation of a [Blackjack-like game](https://even
 └── yarn.lock
 
 </pre>
-
-#### Access Live Version
-
-You can access the live version of our app on https://blackjack-site.netlify.app/
 
 #### Requirements:
 
